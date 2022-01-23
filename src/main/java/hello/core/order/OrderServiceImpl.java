@@ -1,22 +1,17 @@
 package hello.core.order;
 
 import hello.core.discount.DiscountPolicy;
-import hello.core.discount.FixDiscountPolicy;
-import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.MemberRepository;
-import hello.core.member.MemberService;
-import hello.core.member.MemberServiceImpl;
-import hello.core.member.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository;
+    private final MemberRepository memberRepository; //필드 주입 -> 권장하지 않음. 순수 자바 코드로는 외부에서 변경이 불가능해서 setter를 또 만들어줘야함. (수정자로 돌아감)
     private final DiscountPolicy discountPolicy;
 
-    @Autowired
+    @Autowired //생성자가 하나인 경우는 @Autowired 생략해도 똑같은 효과 (자동 의존관계 주입)
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
