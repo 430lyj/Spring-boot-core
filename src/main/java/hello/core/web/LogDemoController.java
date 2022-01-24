@@ -14,16 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 public class LogDemoController {
 
     private final LogDemoService logDemoService;
-    private final ObjectProvider<MyLogger> myLoggerProvider; //MyLogger를 주입 받는게 아니라 MyLogger을 찾을 수 있는 (Dependency Lookup 할 수 있는 것이 됨)
+    private final MyLogger myLogger;
 
     @RequestMapping("log-demo")
     @ResponseBody
-    public String logDemo(HttpServletRequest request){ //자바에서 제공하는 표준 서블렛 규약으로 고객 요청 정보를 받을 수 있음!
+    public String logDemo(HttpServletRequest request) throws InterruptedException { //자바에서 제공하는 표준 서블렛 규약으로 고객 요청 정보를 받을 수 있음!
         String requestURL = request.getRequestURL().toString();
-        MyLogger myLogger = myLoggerProvider.getObject(); //http request가 온 시점 이후에 객체 요청 -> MyLogger 의존 관계 주입 가능
+
+        System.out.println("myLogger = " + myLogger.getClass());
         myLogger.setRequestURL(requestURL);
 
         myLogger.log("controller test");
+        Thread.sleep(1000);
         logDemoService.logic("testId");
         return "OK";
     }
