@@ -1,5 +1,8 @@
 package hello.core.lifeCycle;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 public class NetworkClient{
 
     private String url;
@@ -26,12 +29,14 @@ public class NetworkClient{
         System.out.println("close: " + url);
     }
 
+    @PostConstruct //이건 자바에서 사용하는 것! 스프링 컨테이너가 아니어도 사용 가능하다.
     public void init() {
         System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
 
+    @PreDestroy
     public void close() {
         System.out.println("NetworkClient.close");
         disconnect();
